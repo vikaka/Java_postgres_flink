@@ -46,8 +46,15 @@ public class jdbc_flink {
                 );
         tableEnv.registerDataSet("Customers",dbData,"id,name");
         Table in = tableEnv.sql("select * from Customers where name = 'cbeeb'");
+        Table in1 = tableEnv.sql("select * from Customers where name = 'bfdcc'");
+        Table in2 = tableEnv.sql("select * from Customers where name = 'eefaf'");
         DataSet result = tableEnv.toDataSet(in,rowTypeInfo);
+        DataSet result1 = tableEnv.toDataSet(in1,rowTypeInfo);
+        DataSet result2 = tableEnv.toDataSet(in2,rowTypeInfo);
+
         result.print();
+        result1.print();
+        result2.print();
         env.execute("Word Count Example");
     }
 }
