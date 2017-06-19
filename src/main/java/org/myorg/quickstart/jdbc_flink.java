@@ -12,6 +12,7 @@ import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
 
 
+
 /**
  * Created by Vishesh Kakarala on 6/15/2017.
  */
