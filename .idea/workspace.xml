@@ -2,10 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c22e485a-0967-40c4-9167-c5784ac8642e" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$CountWindowAverage$1.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$CountWindowAverage.class" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job.class" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/jdbc_flink.java" afterPath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/jdbc_flink.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java" afterPath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java" />
     </list>
     <ignored path="$PROJECT_DIR$/target/" />
@@ -27,16 +23,13 @@
       <file leaf-file-name="main_job.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="325">
-              <caret line="232" column="13" lean-forward="true" selection-start-line="232" selection-start-column="13" selection-end-line="232" selection-end-column="13" />
+            <state relative-caret-position="350">
+              <caret line="14" column="52" lean-forward="true" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
               <folding>
-                <element signature="imports" expanded="true" />
                 <element signature="e#2181#2576#0" expanded="true" />
                 <element signature="e#2575#2576#0" expanded="true" />
-                <element signature="e#9066#9090#0" expanded="true" />
-                <marker date="1497966552192" expanded="true" signature="5206:5248" ph="SELECT * FRO... user_settings" />
-                <marker date="1497966552192" expanded="true" signature="5936:5979" ph="SELECT * FRO... user_settings" />
-                <marker date="1497966552192" expanded="true" signature="9873:9915" ph="SELECT * FRO... user_settings" />
+                <element signature="e#4349#4373#0" expanded="true" />
+                <marker date="1497966726735" expanded="true" signature="5156:5198" ph="SELECT * FRO... user_settings" />
               </folding>
             </state>
           </provider>
@@ -735,12 +728,12 @@
       <workItem from="1497708553968" duration="648000" />
       <workItem from="1497796871457" duration="1282000" />
       <workItem from="1497879911571" duration="33541000" />
-      <workItem from="1497927316662" duration="30791000" />
+      <workItem from="1497927316662" duration="30917000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="94174000" />
+    <option name="totallyTimeSpent" value="94300000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-10" y="0" width="1934" height="1030" extended-state="0" />
@@ -834,13 +827,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2181#2576#0" expanded="true" />
             <element signature="e#2575#2576#0" expanded="true" />
-            <element signature="e#9066#9090#0" expanded="true" />
-            <marker date="1497966552192" expanded="true" signature="5206:5248" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="5936:5979" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="9873:9915" ph="SELECT * FRO... user_settings" />
+            <element signature="e#4349#4373#0" expanded="true" />
+            <marker date="1497966726735" expanded="true" signature="5156:5198" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -868,13 +858,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2181#2576#0" expanded="true" />
             <element signature="e#2575#2576#0" expanded="true" />
-            <element signature="e#9066#9090#0" expanded="true" />
-            <marker date="1497966552192" expanded="true" signature="5206:5248" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="5936:5979" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="9873:9915" ph="SELECT * FRO... user_settings" />
+            <element signature="e#4349#4373#0" expanded="true" />
+            <marker date="1497966726735" expanded="true" signature="5156:5198" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -902,13 +889,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2181#2576#0" expanded="true" />
             <element signature="e#2575#2576#0" expanded="true" />
-            <element signature="e#9066#9090#0" expanded="true" />
-            <marker date="1497966552192" expanded="true" signature="5206:5248" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="5936:5979" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="9873:9915" ph="SELECT * FRO... user_settings" />
+            <element signature="e#4349#4373#0" expanded="true" />
+            <marker date="1497966726735" expanded="true" signature="5156:5198" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -936,13 +920,10 @@
         <state relative-caret-position="0">
           <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2181#2576#0" expanded="true" />
             <element signature="e#2575#2576#0" expanded="true" />
-            <element signature="e#9066#9090#0" expanded="true" />
-            <marker date="1497966552192" expanded="true" signature="5206:5248" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="5936:5979" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="9873:9915" ph="SELECT * FRO... user_settings" />
+            <element signature="e#4349#4373#0" expanded="true" />
+            <marker date="1497966726735" expanded="true" signature="5156:5198" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -1003,16 +984,13 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="325">
-          <caret line="232" column="13" lean-forward="true" selection-start-line="232" selection-start-column="13" selection-end-line="232" selection-end-column="13" />
+        <state relative-caret-position="350">
+          <caret line="14" column="52" lean-forward="true" selection-start-line="14" selection-start-column="52" selection-end-line="14" selection-end-column="52" />
           <folding>
-            <element signature="imports" expanded="true" />
             <element signature="e#2181#2576#0" expanded="true" />
             <element signature="e#2575#2576#0" expanded="true" />
-            <element signature="e#9066#9090#0" expanded="true" />
-            <marker date="1497966552192" expanded="true" signature="5206:5248" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="5936:5979" ph="SELECT * FRO... user_settings" />
-            <marker date="1497966552192" expanded="true" signature="9873:9915" ph="SELECT * FRO... user_settings" />
+            <element signature="e#4349#4373#0" expanded="true" />
+            <marker date="1497966726735" expanded="true" signature="5156:5198" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
