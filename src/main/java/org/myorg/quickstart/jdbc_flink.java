@@ -5,8 +5,10 @@ import org.apache.flink.api.common.typeinfo.TypeInformation;
 import org.apache.flink.api.java.DataSet;
 import org.apache.flink.api.java.ExecutionEnvironment;
 import org.apache.flink.api.java.io.jdbc.JDBCInputFormat;
+import org.apache.flink.api.java.operators.DataSource;
 import org.apache.flink.api.java.typeutils.RowTypeInfo;
 
+import org.apache.flink.streaming.api.datastream.DataStream;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.BatchTableEnvironment;
@@ -31,7 +33,7 @@ public class jdbc_flink {
         };
         RowTypeInfo rowTypeInfo = new RowTypeInfo(fieldTypes);
 
-        DataSet dbData =
+        DataSource dbData =
                 env.createInput(
                         // create and configure input format
                         JDBCInputFormat.buildJDBCInputFormat()
