@@ -128,7 +128,7 @@ public class main_job {
 
         @Override
         public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
-
+            Class.forName("org.postgresql.Driver");
             PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
             st.setDouble(1, input.f1*-1);
             ResultSet rs = st.executeQuery();
