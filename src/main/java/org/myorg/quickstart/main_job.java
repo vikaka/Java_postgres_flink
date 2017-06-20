@@ -27,6 +27,7 @@ import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 import org.apache.flink.util.Collector;
 
+import java.io.IOException;
 import java.sql.*;
 import java.util.Properties;
 
@@ -128,8 +129,7 @@ public class main_job {
 
         @Override
         public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
-            Class.forName("org.postgresql.Driver");
-            
+
             PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
             st.setDouble(1, input.f1*-1);
             ResultSet rs = st.executeQuery();
@@ -144,6 +144,10 @@ public class main_job {
 
         @Override
         public void open(Configuration config) throws SQLException {
+            try{
+                Class.forName("org.postgresql.Driver");
+            }
+            catch(ClassNotFoundException ioe){}
             String url = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
             conn = DriverManager.getConnection(url);
             TypeInformation[] fieldTypes = new TypeInformation[]{
