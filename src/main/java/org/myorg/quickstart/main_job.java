@@ -6,8 +6,10 @@ import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.common.state.ListState;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
+import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
+import org.apache.flink.api.java.typeutils.RowTypeInfo;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.*;
@@ -20,6 +22,12 @@ import org.apache.flink.streaming.api.windowing.time.Time;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.tuple.Tuple2;
+import org.apache.flink.table.api.Table;
+import org.apache.flink.table.api.TableEnvironment;
+import org.apache.flink.table.api.java.StreamTableEnvironment;
+import org.apache.flink.table.functions.TableFunction;
+import org.apache.flink.table.sources.CsvTableSource;
+import org.apache.flink.types.Row;
 import org.apache.flink.util.Collector;
 
 
@@ -35,6 +43,39 @@ public class main_job {
     public static void main(String[] args) throws Exception {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
+
+        //Load db data
+
+        StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env) ;
+
+        CsvTableSource csvTableSource = new CsvTableSource(
+                "D:/user_settings.csv",
+                new String[] { "uid", "name", "buy", "sell","funds" },
+                new TypeInformation<?>[] {
+                        BasicTypeInfo.INT_TYPE_INFO,
+                        BasicTypeInfo.STRING_TYPE_INFO,
+                        BasicTypeInfo.DOUBLE_TYPE_INFO,
+                        BasicTypeInfo.DOUBLE_TYPE_INFO,
+                        BasicTypeInfo.DOUBLE_TYPE_INFO
+                },
+                ",",    // fieldDelim
+                "\n",    // rowDelim
+                null,   // quoteCharacter
+                true,   // ignoreFirstLine
+                "%",    // ignoreComments
+                false); // lenient
+        TypeInformation[] fieldTypes = new TypeInformation[] {
+                BasicTypeInfo.INT_TYPE_INFO,
+                BasicTypeInfo.STRING_TYPE_INFO,
+                BasicTypeInfo.DOUBLE_TYPE_INFO,
+                BasicTypeInfo.DOUBLE_TYPE_INFO,
+                BasicTypeInfo.DOUBLE_TYPE_INFO
+        };
+        RowTypeInfo rowTypeInfo = new RowTypeInfo(fieldTypes);
+
+        tableEnv.registerTableSource("Customers",csvTableSource);
+
+        //register datastreams
         Properties properties = new Properties();
 
         properties.setProperty("bootstrap.servers", "34.203.160.240:9092");
@@ -42,18 +83,22 @@ public class main_job {
 
 
         DataStream stream = env.addSource(new FlinkKafkaConsumer010<>("test", new SimpleStringSchema(), properties))
-                .map(new MapFunction<String, Tuple2<String,Double>>() {
+                .map(new MapFunction<String, Tuple2<String, Double>>() {
                     @Override
-                    public Tuple2<String,Double> map(String line) throws Exception {
+                    public Tuple2<String, Double> map(String line) throws Exception {
                         String[] words = line.split(",");
                         Double price = Double.parseDouble(words[1]);
 
-                        return new Tuple2(words[0],price);
+                        return new Tuple2(words[0], price);
                     }
                 });
 
-        stream.print();
+        stream.keyBy(0).flatMap(new CountWindowAverage()).print();
 
+        //Table in2 = tableEnv.scan("Customers")
+          //      .where("name === 'cbeeb'");
+
+/*
         DataStream windows = stream.keyBy(0)
                 .timeWindow(Time.seconds(2))
                 //.window(TumblingEventTimeWindows.of(Time.seconds(5)))
@@ -61,10 +106,9 @@ public class main_job {
                     public Tuple2<String,Double> reduce(Tuple2<String, Double> v1, Tuple2<String, Double> v2) {
                         return new Tuple2(v1.f0, (v1.f1 + v2.f1)/2);
                     } });
+*/
 
 
-
-        stream.keyBy(0).flatMap(new CountWindowAverage()).print();
 
 
 /*        ConnectedStreams conn = stream.connect(windows);
@@ -172,48 +216,18 @@ public class main_job {
         });
 
 
+*/
 
+        //db file load and query
 
-        /* db file load and query
-        StreamTableEnvironment tableEnv = TableEnvironment.getTableEnvironment(env) ;
-
-        CsvTableSource csvTableSource = new CsvTableSource(
-                "D:/user_settings.csv",
-                new String[] { "uid", "name", "buy", "sell","funds" },
-                new TypeInformation<?>[] {
-                        BasicTypeInfo.INT_TYPE_INFO,
-                        BasicTypeInfo.STRING_TYPE_INFO,
-                        BasicTypeInfo.DOUBLE_TYPE_INFO,
-                        BasicTypeInfo.DOUBLE_TYPE_INFO,
-                        BasicTypeInfo.DOUBLE_TYPE_INFO
-                },
-                ",",    // fieldDelim
-                "\n",    // rowDelim
-                null,   // quoteCharacter
-                true,   // ignoreFirstLine
-                "%",    // ignoreComments
-                false); // lenient
-        TypeInformation[] fieldTypes = new TypeInformation[] {
-                BasicTypeInfo.INT_TYPE_INFO,
-                BasicTypeInfo.STRING_TYPE_INFO,
-                BasicTypeInfo.DOUBLE_TYPE_INFO,
-                BasicTypeInfo.DOUBLE_TYPE_INFO,
-                BasicTypeInfo.DOUBLE_TYPE_INFO
-        };
-        RowTypeInfo rowTypeInfo = new RowTypeInfo(fieldTypes);
-
-        tableEnv.registerTableSource("Customers",csvTableSource);
-        Table in2 = tableEnv.sql("select * from Customers where name = 'eefaf'");
-        DataStreamSink<Row> dsRow = tableEnv.toAppendStream(in2, Row.class).print();
+        //DataStreamSink<Row> dsRow = tableEnv.toAppendStream(in2, Row.class).print();
 
 
 
-        */
+
 
 //Execute program
         env.execute("streaming job");
-
-
 
 
     }
@@ -224,13 +238,16 @@ public class main_job {
          * The ValueState handle. The first field is the count, the second field a running sum.
          */
         private transient ValueState<Tuple2<String, Double>> sum;
+        private transient ValueState<Tuple2<String, Double>> avg1;
+
         private int counts = 0;
+
         @Override
         public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
 
             // access the state value
             Tuple2<String, Double> currentSum = sum.value();
-
+            Tuple2<String, Double> currentavg = avg1.value();
             // update the count
             counts += 1;
 
@@ -240,25 +257,34 @@ public class main_job {
             // update the state
             sum.update(currentSum);
 
+
             // if the count reaches 2, emit the average and clear the state
-            if (counts >= 2) {
-                out.collect(new Tuple2<>("average", currentSum.f1 / counts));
+            if (counts >= 5) {
+                currentavg.f1 = currentSum.f1 / counts;
+                avg1.update(currentavg);
                 sum.clear();
                 counts = 0;
             }
+            double diff = (input.f1 - avg1.value().f1) / avg1.value().f1;
+            out.collect(new Tuple2<>(input.f0, diff));
+
         }
+
         @Override
         public void open(Configuration config) {
             ValueStateDescriptor<Tuple2<String, Double>> descriptor =
                     new ValueStateDescriptor<Tuple2<String, Double>>(
                             "average", // the state name
-                            TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {}), // type information
-                            Tuple2.of("name", 0.5)); // default value of the state, if nothing was set
+                            TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {
+                            }), // type information
+                            Tuple2.of("name", 190.5)); // default value of the state, if nothing was set
             sum = getRuntimeContext().getState(descriptor);
+            avg1 = getRuntimeContext().getState(descriptor);
         }
+
+    }
     }
 
 
-}
 
 
