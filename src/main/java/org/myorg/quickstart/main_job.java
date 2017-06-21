@@ -145,6 +145,7 @@ public class main_job {
         @Override
         public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
             if(input.f1<0) {
+                conn.setReadOnly(true);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
                 st.setDouble(1, input.f1 * -1);
                 ResultSet rs = st.executeQuery();
@@ -158,6 +159,7 @@ public class main_job {
                 rs.close();
             }
             else{
+                conn.setReadOnly(true);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE buy < ?");
                 st.setDouble(1, input.f1 );
                 ResultSet rs = st.executeQuery();
@@ -180,12 +182,22 @@ public class main_job {
                 Class.forName("org.postgresql.Driver");
             }
             catch(ClassNotFoundException ioe){ System.out.print("No Driver");}
-            String url = "jdbc:postgresql://transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
-            //String url2 = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
-            //String url3 = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
-            //String url4 = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            //String url = "jdbc:postgresql://transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            //String url = "jdbc:postgresql:replication//transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica2.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica3.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica4.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&autoReconnect=true&roundRobinLoadBalance=true";
 
-            conn = DriverManager.getConnection(url);
+
+            //String url1 = "jdbc:postgresql://replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            String url = "jdbc:postgresql:replication//transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica2.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica3.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica4.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions";
+            Properties props = new Properties();
+            props.setProperty("user","postgres");
+            props.setProperty("password","kakarala");
+            props.setProperty("ssl","true");
+            props.setProperty("autoReconnect", "true");
+            props.setProperty("roundRobinLoadBalance", "true");
+
+
+
+            conn = DriverManager.getConnection(url,props);
                     }
 
 

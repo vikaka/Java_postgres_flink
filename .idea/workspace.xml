@@ -2,11 +2,6 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c22e485a-0967-40c4-9167-c5784ac8642e" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$1.class" afterPath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$CountWindowAverage$1.class" afterPath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$CountWindowAverage$1.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$CountWindowAverage.class" afterPath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$CountWindowAverage.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$QuerySend.class" afterPath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$QuerySend.class" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job.class" afterPath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java" afterPath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java" />
     </list>
@@ -29,15 +24,15 @@
       <file leaf-file-name="main_job.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4700">
-              <caret line="188" column="21" lean-forward="true" selection-start-line="188" selection-start-column="21" selection-end-line="188" selection-end-column="21" />
+            <state relative-caret-position="304">
+              <caret line="197" column="0" lean-forward="true" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2623#3018#0" expanded="true" />
                 <element signature="e#3017#3018#0" expanded="true" />
                 <element signature="e#4793#4817#0" expanded="true" />
-                <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-                <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+                <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+                <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
               </folding>
             </state>
           </provider>
@@ -807,15 +802,15 @@
       <workItem from="1497879911571" duration="33541000" />
       <workItem from="1497927316662" duration="33133000" />
       <workItem from="1497972261474" duration="5627000" />
-      <workItem from="1498044641380" duration="3208000" />
+      <workItem from="1498044641380" duration="8026000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="105351000" />
+    <option name="totallyTimeSpent" value="110169000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-10" y="0" width="1924" height="1030" extended-state="0" />
+    <frame x="-10" y="0" width="1924" height="1030" extended-state="1" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -910,8 +905,8 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -941,8 +936,8 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -972,8 +967,8 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -1003,8 +998,8 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -1034,8 +1029,8 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -1065,8 +1060,8 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
@@ -1121,15 +1116,15 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4700">
-          <caret line="188" column="21" lean-forward="true" selection-start-line="188" selection-start-column="21" selection-end-line="188" selection-end-column="21" />
+        <state relative-caret-position="304">
+          <caret line="197" column="0" lean-forward="true" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498051089104" expanded="true" signature="5632:5674" ph="SELECT * FRO... user_settings" />
-            <marker date="1498051089104" expanded="true" signature="6199:6240" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
+            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
           </folding>
         </state>
       </provider>
