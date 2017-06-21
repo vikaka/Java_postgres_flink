@@ -141,11 +141,11 @@ public class main_job {
     public static class QuerySend extends RichFlatMapFunction<Tuple2<String, Double>, Tuple2<String, Double>> {
 
         private Connection conn;
+        private Connection conn_write;
 
         @Override
         public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
             if(input.f1<0) {
-                conn.setReadOnly(true);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
                 st.setDouble(1, input.f1 * -1);
                 ResultSet rs = st.executeQuery();
@@ -153,13 +153,20 @@ public class main_job {
                     String name = rs.getString("name");
                     Long uid = rs.getLong("UID");
                     Double Funds = rs.getDouble("funds");
-                    System.out.println(name+" "+uid+" "+Funds+" sell "+input.f0);
+                    String sell = "sell";
+                    PreparedStatement ins = conn_write.prepareStatement("Insert into TRANSACTIONS values(?,?,?,?,?) ");
+                    ins.setLong(1,uid);
+                    ins.setString(2,name);
+                    ins.setDouble(3,Funds);
+                    ins.setString(4,sell);
+                    ins.setString(5,input.f0);
+                    ins.executeUpdate();
+                    //System.out.println(name+" "+uid+" "+Funds+" sell "+input.f0);
 
                 }
                 rs.close();
             }
             else{
-                conn.setReadOnly(true);
                 PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE buy < ?");
                 st.setDouble(1, input.f1 );
                 ResultSet rs = st.executeQuery();
@@ -167,7 +174,15 @@ public class main_job {
                     String name = rs.getString("name");
                     Long uid = rs.getLong("UID");
                     Double Funds = rs.getDouble("funds");
-                    System.out.println(name+" "+uid+" "+Funds+" buy "+input.f0);
+                    String buy = "buy";
+                    PreparedStatement ins = conn_write.prepareStatement("Insert into TRANSACTIONS values(?,?,?,?,?) ");
+                    ins.setLong(1,uid);
+                    ins.setString(2,name);
+                    ins.setDouble(3,Funds);
+                    ins.setString(4,buy);
+                    ins.setString(5,input.f0);
+                    ins.executeUpdate();
+                    //System.out.println(name+" "+uid+" "+Funds+" buy "+input.f0);
                 }
                 rs.close();
 
@@ -182,22 +197,24 @@ public class main_job {
                 Class.forName("org.postgresql.Driver");
             }
             catch(ClassNotFoundException ioe){ System.out.print("No Driver");}
-            //String url = "jdbc:postgresql://transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
-            //String url = "jdbc:postgresql:replication//transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica2.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica3.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica4.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory&autoReconnect=true&roundRobinLoadBalance=true";
 
+            String write_url = "jdbc:postgresql://transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            String read_url = "jdbc:postgresql://replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica2.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica3.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica4.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions";
 
-            //String url1 = "jdbc:postgresql://replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
-            String url = "jdbc:postgresql:replication//transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica1.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica2.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica3.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432,replica4.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions";
             Properties props = new Properties();
             props.setProperty("user","postgres");
             props.setProperty("password","kakarala");
             props.setProperty("ssl","true");
+            props.setProperty("sslfactory","org.postgresql.ssl.NonValidatingFactory");
             props.setProperty("autoReconnect", "true");
             props.setProperty("roundRobinLoadBalance", "true");
+            props.setProperty("loadBalanceHosts","true");
 
 
 
-            conn = DriverManager.getConnection(url,props);
+
+            conn = DriverManager.getConnection(read_url,props);
+            conn_write = DriverManager.getConnection(write_url,props);
                     }
 
 

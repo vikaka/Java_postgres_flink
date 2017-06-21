@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="c22e485a-0967-40c4-9167-c5784ac8642e" name="Default" comment="">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$QuerySend.class" afterPath="$PROJECT_DIR$/target/classes/org/myorg/quickstart/main_job$QuerySend.class" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java" afterPath="$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java" />
     </list>
@@ -24,15 +25,17 @@
       <file leaf-file-name="main_job.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="304">
-              <caret line="197" column="0" lean-forward="true" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+            <state relative-caret-position="225">
+              <caret line="157" column="39" lean-forward="true" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#2623#3018#0" expanded="true" />
                 <element signature="e#3017#3018#0" expanded="true" />
                 <element signature="e#4793#4817#0" expanded="true" />
-                <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-                <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+                <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+                <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+                <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+                <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
               </folding>
             </state>
           </provider>
@@ -802,12 +805,13 @@
       <workItem from="1497879911571" duration="33541000" />
       <workItem from="1497927316662" duration="33133000" />
       <workItem from="1497972261474" duration="5627000" />
-      <workItem from="1498044641380" duration="8026000" />
+      <workItem from="1498044641380" duration="12922000" />
+      <workItem from="1498068601324" duration="645000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="110169000" />
+    <option name="totallyTimeSpent" value="115710000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-10" y="0" width="1924" height="1030" extended-state="1" />
@@ -905,8 +909,43 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/pom.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2325">
+          <caret line="93" column="21" lean-forward="false" selection-start-line="93" selection-start-column="21" selection-end-line="93" selection-end-column="21" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/jdbc_flink.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="700">
+          <caret line="39" column="70" lean-forward="false" selection-start-line="39" selection-start-column="47" selection-end-line="39" selection-end-column="70" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2623#3018#0" expanded="true" />
+            <element signature="e#3017#3018#0" expanded="true" />
+            <element signature="e#4793#4817#0" expanded="true" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
@@ -936,8 +975,10 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
@@ -967,8 +1008,10 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
@@ -998,8 +1041,10 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
@@ -1029,8 +1074,10 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
@@ -1060,8 +1107,10 @@
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
@@ -1116,15 +1165,17 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/myorg/quickstart/main_job.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="197" column="0" lean-forward="true" selection-start-line="197" selection-start-column="0" selection-end-line="197" selection-end-column="0" />
+        <state relative-caret-position="225">
+          <caret line="157" column="39" lean-forward="true" selection-start-line="157" selection-start-column="39" selection-end-line="157" selection-end-column="39" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#2623#3018#0" expanded="true" />
             <element signature="e#3017#3018#0" expanded="true" />
             <element signature="e#4793#4817#0" expanded="true" />
-            <marker date="1498058454032" expanded="true" signature="5672:5714" ph="SELECT * FRO... user_settings" />
-            <marker date="1498058454032" expanded="true" signature="6279:6320" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="5671:5713" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="6130:6172" ph="Insert into TRANSACTIONS... " />
+            <marker date="1498068978817" expanded="true" signature="6660:6701" ph="SELECT * FRO... user_settings" />
+            <marker date="1498068978817" expanded="true" signature="7112:7154" ph="Insert into TRANSACTIONS... " />
           </folding>
         </state>
       </provider>
