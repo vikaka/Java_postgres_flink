@@ -26,6 +26,21 @@ import org.apache.flink.table.api.TableEnvironment;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 import org.apache.flink.util.Collector;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
+import java.sql.Time;
+import java.sql.Timestamp;
+import java.util.AbstractMap;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import java.io.IOException;
 import java.sql.*;
@@ -72,7 +87,7 @@ public class main_job {
     public static class CountWindowAverage extends RichFlatMapFunction<Tuple2<String, Double>, Tuple2<String, Double>> {
 
         /**
-         * The ValueState handle. The first field is the count, the second field a running sum.
+         * The ValueState handle. The first field is the sum, the second field a running average.
          */
         private transient ValueState<Tuple2<String, Double>> sum;
         private transient ValueState<Tuple2<String, Double>> avg1;
@@ -94,7 +109,7 @@ public class main_job {
             sum.update(currentSum);
 
 
-            // if the count reaches 2, emit the average and clear the state
+            // if the count reaches 5, emit the average and clear the state
             if (counts >= 5) {
                 currentavg.f1 = currentSum.f1 / counts;
                 avg1.update(currentavg);
@@ -129,16 +144,33 @@ public class main_job {
 
         @Override
         public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
+            if(input.f1<0) {
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
+                st.setDouble(1, input.f1 * -1);
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    Long uid = rs.getLong("UID");
+                    Double Funds = rs.getDouble("funds");
+                    System.out.println(name+" "+uid+" "+Funds+" sell "+input.f0);
 
-            PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
-            st.setDouble(1, input.f1*-1);
-            ResultSet rs = st.executeQuery();
-            while (rs.next()) {
-                System.out.print("Column 1 returned ");
-                System.out.println(rs.getRow());
+                }
+                rs.close();
             }
-            rs.close();
+            else{
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE buy < ?");
+                st.setDouble(1, input.f1 );
+                ResultSet rs = st.executeQuery();
+                while (rs.next()) {
+                    String name = rs.getString("name");
+                    Long uid = rs.getLong("UID");
+                    Double Funds = rs.getDouble("funds");
+                    System.out.println(name+" "+uid+" "+Funds+" buy "+input.f0);
+                }
+                rs.close();
 
+
+            }
 
         }
 
@@ -147,22 +179,15 @@ public class main_job {
             try{
                 Class.forName("org.postgresql.Driver");
             }
-            catch(ClassNotFoundException ioe){}
-            String url = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            catch(ClassNotFoundException ioe){ System.out.print("No Driver");}
+            String url = "jdbc:postgresql://transactions-trades.ca4vkhzfvza0.us-east-1.rds.amazonaws.com:5432/transactions?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            //String url2 = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            //String url3 = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+            //String url4 = "jdbc:postgresql://34.225.139.150:5432/testdb?user=postgres&password=kakarala&ssl=true&sslfactory=org.postgresql.ssl.NonValidatingFactory";
+
             conn = DriverManager.getConnection(url);
-            TypeInformation[] fieldTypes = new TypeInformation[]{
-                    BasicTypeInfo.LONG_TYPE_INFO,
-                    BasicTypeInfo.STRING_TYPE_INFO,
-                    BasicTypeInfo.DOUBLE_TYPE_INFO,
-                    BasicTypeInfo.DOUBLE_TYPE_INFO,
-                    BasicTypeInfo.DOUBLE_TYPE_INFO
-            };
-            RowTypeInfo rowTypeInfo = new RowTypeInfo(fieldTypes);
+                    }
 
-
-
-
-        }
 
         }
 
