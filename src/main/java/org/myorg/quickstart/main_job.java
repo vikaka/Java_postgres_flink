@@ -1,51 +1,29 @@
 package org.myorg.quickstart;
 
-import org.apache.flink.api.common.functions.FlatMapFunction;
 import org.apache.flink.api.common.functions.MapFunction;
 import org.apache.flink.api.common.functions.RichFlatMapFunction;
 import org.apache.flink.api.common.state.ValueState;
 import org.apache.flink.api.common.state.ValueStateDescriptor;
-import org.apache.flink.api.common.typeinfo.BasicTypeInfo;
 import org.apache.flink.api.common.typeinfo.TypeHint;
 import org.apache.flink.api.common.typeinfo.TypeInformation;
-import org.apache.flink.api.common.typeinfo.Types;
-import org.apache.flink.api.java.io.jdbc.JDBCInputFormat;
-import org.apache.flink.api.java.typeutils.RowTypeInfo;
-import org.apache.flink.api.java.typeutils.TupleTypeInfo;
 import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.functions.co.CoFlatMapFunction;
+import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.tuple.Tuple2;
-import org.apache.flink.api.java.tuple.Tuple5;
-import org.apache.flink.table.api.Table;
-import org.apache.flink.table.api.TableEnvironment;
-import org.apache.flink.table.api.java.StreamTableEnvironment;
-import org.apache.flink.types.Row;
+import org.apache.flink.api.java.tuple.Tuple3;
+import org.apache.flink.api.java.tuple.Tuple4;
+
 import org.apache.flink.util.Collector;
-import java.math.BigDecimal;
-import java.sql.Date;
+
 import java.sql.ResultSet;
-import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.sql.Timestamp;
-import java.util.AbstractMap;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
-import java.io.IOException;
 import java.sql.*;
-import java.util.Properties;
-
+import java.sql.Time;
+import java.util.*;
 
 
 public class main_job {
@@ -55,26 +33,27 @@ public class main_job {
         final StreamExecutionEnvironment env = StreamExecutionEnvironment.getExecutionEnvironment();
         env.setStreamTimeCharacteristic(TimeCharacteristic.ProcessingTime);
 
-        //register datastreams
+        //register dataStreams
         Properties properties = new Properties();
 
-        properties.setProperty("bootstrap.servers", "34.203.160.240:9092");
+        properties.setProperty("bootstrap.servers", "34.227.239.169:9092");
         properties.setProperty("group.id", "test");
 
 
         DataStream stream = env.addSource(new FlinkKafkaConsumer010<>("test", new SimpleStringSchema(), properties))
-                .map(new MapFunction<String, Tuple2<String, Double>>() {
+                .map(new MapFunction<String, Tuple3<String, Double,Timestamp>>() {
                     @Override
-                    public Tuple2<String, Double> map(String line) throws Exception {
+                    public Tuple3<String, Double,Timestamp> map(String line) throws Exception {
                         String[] words = line.split(",");
                         Double price = Double.parseDouble(words[1]);
-
-                        return new Tuple2(words[0], price);
+                        Timestamp ts = Timestamp.valueOf(words[2]);
+                        return new Tuple3(words[0], price,ts);
                     }
                 });
 
         DataStream val = stream.keyBy(0).flatMap(new CountWindowAverage());
-        val.flatMap(new QuerySend());
+        val.print();
+        //val.flatMap(new QuerySend());
 
 
 
@@ -84,43 +63,58 @@ public class main_job {
 
     }
 
-    public static class CountWindowAverage extends RichFlatMapFunction<Tuple2<String, Double>, Tuple2<String, Double>> {
+    public static class CountWindowAverage extends RichFlatMapFunction<Tuple3<String, Double,Timestamp>, Tuple4<String, Double, Double,Timestamp>> {
 
         /**
          * The ValueState handle. The first field is the sum, the second field a running average.
          */
-        private transient ValueState<Tuple2<String, Double>> sum;
-        private transient ValueState<Tuple2<String, Double>> avg1;
-        private int counts = 0;
+        private transient ValueState<Tuple2<String, Double>> val1;
+        private transient ValueState<Tuple2<String, Double>> val2;
+        private transient ValueState<Tuple2<String, Double>> val3;
+        private transient ValueState<Tuple2<String, Double>> val4;
+        private transient ValueState<Tuple2<String, Double>> val5;
+        private int flag = 1;
+        private double avg;
+        private double sum;
+        private double diff;
 
         @Override
-        public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
+        public void flatMap(Tuple3<String, Double,Timestamp> input, Collector<Tuple4<String, Double,Double,Timestamp>> out) throws Exception {
 
-            // access the state value
-            Tuple2<String, Double> currentSum = sum.value();
-            Tuple2<String, Double> currentavg = avg1.value();
-            // update the count
-            counts += 1;
-
-            // add the second field of the input value
-            currentSum.f1 += input.f1;
-
-            // update the state
-            sum.update(currentSum);
+            sum = val1.value().f1+val2.value().f1+val3.value().f1+val4.value().f1+val5.value().f1;
+            avg = sum/5;
+            diff = (input.f1 - avg) / avg;
 
 
-            // if the count reaches 5, emit the average and clear the state
-            if (counts >= 5) {
-                currentavg.f1 = currentSum.f1 / counts;
-                avg1.update(currentavg);
-                sum.clear();
-                counts = 0;
+            switch(flag){
+                case 1:
+                    val1.update(new Tuple2(input.f0,input.f1));
+                    flag =2;
+                    break;
+                case 2:
+                    val2.update(new Tuple2(input.f0,input.f1));
+                    flag =3;
+                    break;
+                case 3:
+                    val3.update(new Tuple2(input.f0,input.f1));
+                    flag =4;
+                    break;
+                case 4:
+                    val4.update(new Tuple2(input.f0,input.f1));
+                    flag =5;
+                    break;
+                case 5:
+                    val5.update(new Tuple2(input.f0,input.f1));
+                    flag =1;
+                    break;
             }
-            double diff = (input.f1 - avg1.value().f1) / avg1.value().f1;
-            if (diff > 0) {
-            } else {
+
+            if(diff == input.f1){
+                diff = 0.0;
             }
-            out.collect(new Tuple2<>(input.f0, diff));
+
+
+            out.collect(new Tuple4<>(input.f0, input.f1,diff,input.f2));//input.f2));
 
         }
 
@@ -128,64 +122,123 @@ public class main_job {
         public void open(Configuration config) {
             ValueStateDescriptor<Tuple2<String, Double>> descriptor =
                     new ValueStateDescriptor<Tuple2<String, Double>>(
-                            "average", // the state name
+                            "average1", // the state name
                             TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {
                             }), // type information
-                            Tuple2.of("name", 190.5)); // default value of the state, if nothing was set
-            sum = getRuntimeContext().getState(descriptor);
-            avg1 = getRuntimeContext().getState(descriptor);
+                            Tuple2.of("name", 0.0)); // default value of the state, if nothing was set
+            val1 = getRuntimeContext().getState(descriptor);
+            ValueStateDescriptor<Tuple2<String, Double>> descriptor1 =
+                    new ValueStateDescriptor<Tuple2<String, Double>>(
+                            "average2", // the state name
+                            TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {
+                            }), // type information
+                            Tuple2.of("name", 0.0)); // default value of the state, if nothing was set
+            val2 = getRuntimeContext().getState(descriptor1);
+            ValueStateDescriptor<Tuple2<String, Double>> descriptor2 =
+                    new ValueStateDescriptor<Tuple2<String, Double>>(
+                            "average3", // the state name
+                            TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {
+                            }), // type information
+                            Tuple2.of("name", 0.0)); // default value of the state, if nothing was set
+
+            val3 = getRuntimeContext().getState(descriptor2);
+            ValueStateDescriptor<Tuple2<String, Double>> descriptor3 =
+                    new ValueStateDescriptor<Tuple2<String, Double>>(
+                            "average4", // the state name
+                            TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {
+                            }), // type information
+                            Tuple2.of("name", 0.0)); // default value of the state, if nothing was set
+
+            val4 = getRuntimeContext().getState(descriptor3);
+            ValueStateDescriptor<Tuple2<String, Double>> descriptor4 =
+                    new ValueStateDescriptor<Tuple2<String, Double>>(
+                            "average5", // the state name
+                            TypeInformation.of(new TypeHint<Tuple2<String, Double>>() {
+                            }), // type information
+                            Tuple2.of("name", 0.0)); // default value of the state, if nothing was set
+
+            val5 = getRuntimeContext().getState(descriptor4);
         }
 
     }
 
-    public static class QuerySend extends RichFlatMapFunction<Tuple2<String, Double>, Tuple2<String, Double>> {
+    public static class QuerySend extends RichFlatMapFunction<Tuple4<String, Double, Double,Timestamp>, Tuple2<String, Double>> {
 
         private Connection conn;
         private Connection conn_write;
 
         @Override
-        public void flatMap(Tuple2<String, Double> input, Collector<Tuple2<String, Double>> out) throws Exception {
+        public void flatMap(Tuple4<String, Double, Double,Timestamp> input, Collector<Tuple2<String, Double>> out) throws Exception {
             if(input.f1<0) {
-                PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE sell > ?");
-                st.setDouble(1, input.f1 * -1);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM BUY WHERE sell > ?");
+                st.setDouble(1, input.f2 * -1);
                 ResultSet rs = st.executeQuery();
+                if (!rs.next() ) {
+                    System.out.println("no data");
+                }
+                else{
                 while (rs.next()) {
                     String name = rs.getString("name");
                     Long uid = rs.getLong("UID");
-                    Double Funds = rs.getDouble("funds");
+                    Double Price = rs.getDouble("price");
+                    Double Quantity = rs.getDouble("quantity");
+                    Double cost = Price*Quantity;
                     String sell = "sell";
-                    PreparedStatement ins = conn_write.prepareStatement("Insert into TRANSACTIONS values(?,?,?,?,?) ");
+                    PreparedStatement ins = conn_write.prepareStatement("Insert into TRANSACTIONS values(?,?,?,?,?,?,?) ");
                     ins.setLong(1,uid);
                     ins.setString(2,name);
-                    ins.setDouble(3,Funds);
+                    ins.setDouble(3,cost);
                     ins.setString(4,sell);
                     ins.setString(5,input.f0);
+                    ins.setDouble(6,Quantity);
+                    ins.setTimestamp(7,input.f3);
                     ins.executeUpdate();
                     //System.out.println(name+" "+uid+" "+Funds+" sell "+input.f0);
 
                 }
-                rs.close();
+                rs.close();}
             }
             else{
-                PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE buy < ?");
-                st.setDouble(1, input.f1 );
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM user_settings WHERE buy < ? and funds > ?");
+                st.setDouble(1, input.f2 );
+                st.setDouble(2, input.f1 );
                 ResultSet rs = st.executeQuery();
-                while (rs.next()) {
-                    String name = rs.getString("name");
-                    Long uid = rs.getLong("UID");
-                    Double Funds = rs.getDouble("funds");
-                    String buy = "buy";
-                    PreparedStatement ins = conn_write.prepareStatement("Insert into TRANSACTIONS values(?,?,?,?,?) ");
-                    ins.setLong(1,uid);
-                    ins.setString(2,name);
-                    ins.setDouble(3,Funds);
-                    ins.setString(4,buy);
-                    ins.setString(5,input.f0);
-                    ins.executeUpdate();
-                    //System.out.println(name+" "+uid+" "+Funds+" buy "+input.f0);
+                if (!rs.next() ) {
+                    System.out.println("no data");
                 }
-                rs.close();
+                else {
 
+                    while (rs.next()) {
+                        String name = rs.getString("name");
+                        Long uid = rs.getLong("UID");
+                        Double Funds = rs.getDouble("funds");
+                        String buy = "buy";
+                        Double quantity = Math.floor(Funds / input.f1);
+                        Double cost = quantity * Funds;
+                        Double sell = rs.getDouble("sell");
+                        PreparedStatement ins = conn_write.prepareStatement("Insert into TRANSACTIONS values(?,?,?,?,?,?,?) ");
+                        ins.setLong(1, uid);
+                        ins.setString(2, name);
+                        ins.setDouble(3, cost);
+                        ins.setString(4, buy);
+                        ins.setString(5, input.f0);
+                        ins.setDouble(6, quantity);
+                        ins.setTimestamp(7, input.f3);
+
+                        ins.executeUpdate();
+                        PreparedStatement buy_sql = conn_write.prepareStatement("Insert into BUY values(?,?,?,?,?,?) ");
+                        buy_sql.setLong(1, uid);
+                        buy_sql.setString(2, input.f0);
+                        buy_sql.setDouble(3, input.f1);
+                        buy_sql.setDouble(4, quantity);
+                        buy_sql.setTimestamp(5, input.f3);
+                        buy_sql.setDouble(6, sell);
+
+                        buy_sql.executeUpdate();
+                        //System.out.println(name+" "+uid+" "+Funds+" buy "+input.f0);
+                    }
+                    rs.close();
+                }
 
             }
 
