@@ -10,7 +10,6 @@ import org.apache.flink.configuration.Configuration;
 import org.apache.flink.streaming.api.TimeCharacteristic;
 import org.apache.flink.streaming.api.datastream.*;
 import org.apache.flink.streaming.api.environment.StreamExecutionEnvironment;
-import org.apache.flink.streaming.api.windowing.assigners.SlidingProcessingTimeWindows;
 import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer010;
 import org.apache.flink.streaming.util.serialization.SimpleStringSchema;
 import org.apache.flink.api.java.tuple.Tuple2;
@@ -170,8 +169,9 @@ public class main_job {
         @Override
         public void flatMap(Tuple4<String, Double, Double,Timestamp> input, Collector<Tuple2<String, Double>> out) throws Exception {
             if(input.f1<0) {
-                PreparedStatement st = conn.prepareStatement("SELECT * FROM BUY WHERE sell > ?");
-                st.setDouble(1, input.f2 * -1);
+                PreparedStatement st = conn.prepareStatement("SELECT * FROM BUY WHERE name = ? and sell > ?");
+                st.setString(1, input.f0);
+                st.setDouble(2, input.f2 * -1);
                 ResultSet rs = st.executeQuery();
                 if (!rs.next() ) {
                     System.out.println("no data");
